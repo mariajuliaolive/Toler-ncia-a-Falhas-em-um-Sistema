@@ -1,0 +1,22 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Estrutura para logs
+logs = {
+    "timestep": [],
+    "servidor": [],
+    "tipo": [],
+    "status": [],
+    "atendimentos_realizados": [],
+    "falhas": [],
+    "redirecionamentos": []
+}
+
+def log_event(timestep, servidor, tipo, status, atendimentos, falhas, redirecionamentos):
+    logs["timestep"].append(timestep)
+    logs["servidor"].append(servidor)
+    logs["tipo"].append(tipo)
+    logs["status"].append(status)
+    logs["atendimentos_realizados"].append(atendimentos)
+    logs["falhas"].append(falhas)
+    logs["redirecionamentos"].append(redirecionamentos)

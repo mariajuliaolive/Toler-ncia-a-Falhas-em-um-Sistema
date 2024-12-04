@@ -1,0 +1,57 @@
+# Criar DataFrame a partir dos logs
+df_logs = pd.DataFrame(logs)
+
+# Tabela de Status de Servidor
+print("Tabela de Status de Servidor")
+print(df_logs.groupby(['timestep', 'servidor']).sum())
+
+# Gráfico 1: Número de Atendimentos por Servidor
+def plot_atendimentos(df):
+    atendimentos = df.groupby(['timestep', 'servidor'])['atendimentos_realizados'].sum().unstack()
+    atendimentos.plot(kind='bar', figsize=(10, 6))
+    plt.title('Atendimentos Realizados por Servidor ao Longo do Tempo')
+    plt.xlabel('Timestep')
+    plt.ylabel('Atendimentos')
+    plt.legend(title='Servidor')
+    plt.tight_layout()
+    plt.show()
+
+# Gráfico 2: Número de Falhas ao Longo do Tempo
+def plot_falhas(df):
+    falhas = df.groupby('timestep')['falhas'].sum()
+    falhas.plot(kind='line', marker='o', figsize=(10, 6))
+    plt.title('Número de Falhas ao Longo do Tempo')
+    plt.xlabel('Timestep')
+    plt.ylabel('Falhas')
+    plt.tight_layout()
+    plt.show()
+
+# Gráfico 3: Distribuição de Redirecionamentos
+def plot_redirecionamentos(df):
+    redirecionamentos = df['redirecionamentos'].sum()
+    labels = df['servidor'].unique()
+    redirecionados_por_servidor = df.groupby('servidor')['redirecionamentos'].sum()
+    redirecionados_por_servidor.plot(kind='pie', autopct='%1.1f%%', figsize=(8, 8))
+    plt.title('Distribuição de Redirecionamentos por Servidor')
+    plt.ylabel('')
+    plt.tight_layout()
+    plt.show()
+
+
+
+    # Exemplo de Logging em um timestep
+for servidor in servidores:
+    log_event(
+        timestep=timestep,
+        servidor=servidor.nome,
+        tipo="Atendimento",
+        status="Ativo" if servidor.ativo else "Inativo",
+        atendimentos=len(servidor.atendentes),
+        falhas=random.randint(0, 2),  # Falhas simuladas
+        redirecionamentos=random.randint(0, 3)  # Redirecionamentos simulados
+    )
+
+# Geração de Gráficos ao Final
+plot_atendimentos(df_logs)
+plot_falhas(df_logs)
+plot_redirecionamentos(df_logs)
